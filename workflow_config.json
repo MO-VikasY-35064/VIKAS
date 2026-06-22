@@ -1,0 +1,36 @@
+{
+  "workflow_name": "Sales Monthly Report",
+  "description": "End-to-end automated pipeline: load → clean → pivot → export",
+  "steps": [
+    {
+      "action": "load",
+      "filepath": "sales.csv"
+    },
+    {
+      "action": "clean",
+      "drop_duplicates": true,
+      "handle_missing": "mean"
+    },
+    {
+      "action": "summary"
+    },
+    {
+      "action": "pivot",
+      "index": ["Region"],
+      "values": ["Sales"],
+      "aggfunc": "sum",
+      "name": "region_sales"
+    },
+    {
+      "action": "pivot",
+      "index": ["Product"],
+      "values": ["Sales", "Profit"],
+      "aggfunc": "mean",
+      "name": "product_summary"
+    },
+    {
+      "action": "export",
+      "output": "reports/monthly_report.xlsx"
+    }
+  ]
+}
