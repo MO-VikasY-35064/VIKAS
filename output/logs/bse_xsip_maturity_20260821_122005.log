@@ -1,0 +1,12 @@
+2026-08-21 12:20:05,246 | INFO | Logger initialized
+2026-08-21 12:20:05,247 | INFO | Log file: output\logs\bse_xsip_maturity_20260821_122005.log
+2026-08-21 12:20:06,393 | ERROR | Unhandled error: BrowserType.launch: Executable doesn't exist at C:\Users\vikaspyadav\AppData\Local\ms-playwright\chromium_headless_shell-1208\chrome-headless-shell-win64\chrome-headless-shell.exe
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     playwright install                                     ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+2026-08-21 12:20:06,404 | INFO | Execution summary: {"login_status": "failed", "report_navigation_status": "failed", "from_date_selected": null, "to_date_unchanged": true, "download_status": "failed", "downloaded_filename": null, "execution_timestamp": "2026-08-21T12:20:05", "summary_file": "output\\logs\\execution_summary_20260821_122006.json", "failure_screenshot": null, "error_message": "BrowserType.launch: Executable doesn't exist at C:\\Users\\vikaspyadav\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     playwright install                                     ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"}

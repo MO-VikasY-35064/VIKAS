@@ -1,0 +1,12 @@
+{
+  "login_status": "failed",
+  "report_navigation_status": "failed",
+  "from_date_selected": null,
+  "to_date_unchanged": true,
+  "download_status": "failed",
+  "downloaded_filename": null,
+  "execution_timestamp": "2026-08-21T11:19:57",
+  "summary_file": "output\\logs\\execution_summary_20260821_112000.json",
+  "failure_screenshot": null,
+  "error_message": "BrowserType.launch: Executable doesn't exist at C:\\Users\\vikaspyadav\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1208\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     playwright install                                     ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"
+}
