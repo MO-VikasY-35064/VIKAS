@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create Your Account</h1>
+<form method="post" class="card form-card">
+  <label>Mobile Number *</label>
+  <input type="tel" name="mobile" pattern="[6-9][0-9]{9}" maxlength="10" required value="{{ form.mobile or '' }}">
+  <label>Password *</label>
+  <input type="password" name="password" minlength="6" required>
+  <label>Name (optional)</label>
+  <input type="text" name="name" value="{{ form.name or '' }}">
+  <label>Email (optional)</label>
+  <input type="email" name="email" value="{{ form.email or '' }}">
+  <div class="form-actions">
+    <button class="btn" type="submit">Sign Up</button>
+    <p class="help-text">Already have an account? <a href="{{ url_for('auth.customer_login') }}">Login</a></p>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Contact Us</h1>
+<div class="card" style="max-width:480px;">
+  <p><strong>Address:</strong><br>{{ site.address }}</p>
+  <p><strong>Phone:</strong><br>{{ site.contact_number }}</p>
+  <p><strong>Email:</strong><br>{{ site.contact_email }}</p>
+</div>
+{% endblock %}

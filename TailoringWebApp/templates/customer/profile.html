@@ -1,0 +1,16 @@
+{% extends "customer/base.html" %}
+{% block account_content %}
+<h1>My Profile</h1>
+<form method="post" class="card form-card">
+  <label>Mobile Number</label>
+  <input type="text" value="{{ customer.mobile }}" disabled>
+  <p class="help-text">Mobile number cannot be changed. Contact support if it's incorrect.</p>
+  <label>Name</label>
+  <input type="text" name="name" value="{{ customer.name or '' }}">
+  <label>Email</label>
+  <input type="email" name="email" value="{{ customer.email or '' }}">
+  <label>Address</label>
+  <textarea name="address" rows="3">{{ customer.address or '' }}</textarea>
+  <div class="form-actions"><button class="btn" type="submit">Save</button></div>
+</form>
+{% endblock %}

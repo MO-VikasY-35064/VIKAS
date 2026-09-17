@@ -1,0 +1,60 @@
+{% extends "customer/base.html" %}
+{% block account_content %}
+<h1>Order {{ order.order_number }}</h1>
+<p class="muted">{{ order.design_name }} &middot; Placed {{ order.created_at }} &middot; Delivery {{ order.delivery_date }}</p>
+
+<div class="timeline">
+  {% set flow = ALL_ORDER_STATUSES[:11] %}
+  {% set current_index = flow.index(order.status) if order.status in flow else -1 %}
+  {% for s in flow %}
+    {% set idx = loop.index0 %}
+    <div class="timeline-step {{ 'done' if idx < current_index else ('current' if idx == current_index else '') }}">
+      <div class="dot">{{ '✓' if idx < current_index else idx+1 }}</div>
+      <div class="label">{{ s.replace('_',' ').title() }}</div>
+    </div>
+  {% endfor %}
+</div>
+{% if order.status in ('CANCELLED','ON_HOLD') %}
+  <p><span class="badge badge-cancelled">{{ order.status }}</span>{% if order.cancellation_reason %} - {{ order.cancellation_reason }}{% endif %}</p>
+{% endif %}
+
+<div class="grid grid-2" style="margin-top:24px;">
+  <div class="card">
+    <h4 class="mt-0">Payment Summary</h4>
+    <p>Total: <strong>{{ order.total_amount | inr }}</strong></p>
+    <p>Received: {{ order.amount_received | inr }}</p>
+    <p>Pending: {{ order.amount_pending | inr }}</p>
+    <p>Mode: {{ order.payment_mode }} &middot; Status: <span class="badge badge-{{ order.payment_status|lower }}">{{ order.payment_status }}</span></p>
+  </div>
+
+  <div class="card">
+    <h4 class="mt-0">Trial Images</h4>
+    {% if trial_images %}
+      {% for img in trial_images %}
+        <img src="{{ url_for('media', filename=img.file_path) }}" style="width:100%;border-radius:8px;margin-bottom:8px;">
+      {% endfor %}
+    {% else %}
+      <p class="muted">No trial image uploaded yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+  <h4 class="mt-0">Upload a Reference Image (optional)</h4>
+  <p class="help-text">Have a photo of a style you like? Upload it for our tailors to reference.</p>
+  <form method="post" action="{{ url_for('customer.upload_reference_image', order_number=order.order_number) }}" enctype="multipart/form-data">
+    <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" required>
+    <div class="form-actions"><button class="btn btn-sm" type="submit">Upload</button></div>
+  </form>
+</div>
+
+<h3 style="margin-top:32px;">Status History</h3>
+<table>
+  <thead><tr><th>Date/Time</th><th>Status</th><th>Remarks</th></tr></thead>
+  <tbody>
+  {% for h in history %}
+    <tr><td>{{ h.created_at }}</td><td>{{ h.new_status.replace('_',' ').title() }}</td><td>{{ h.remarks or '-' }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

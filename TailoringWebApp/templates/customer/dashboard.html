@@ -1,0 +1,41 @@
+{% extends "customer/base.html" %}
+{% block account_content %}
+<h1>Welcome, {{ customer.name or customer.mobile }}</h1>
+
+{% if not measurement %}
+  <div class="flash flash-warning">You haven't added your measurements yet. <a href="{{ url_for('customer.measurements') }}">Add them now</a> to place an order.</div>
+{% endif %}
+
+<div class="grid grid-2" style="margin-bottom:24px;">
+  <div class="card">
+    <h4 class="mt-0">Recent Orders</h4>
+    {% if orders %}
+      <table>
+        <thead><tr><th>Order</th><th>Design</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for o in orders %}
+          <tr>
+            <td><a href="{{ url_for('customer.order_detail', order_number=o.order_number) }}">{{ o.order_number }}</a></td>
+            <td>{{ o.design_name }}</td>
+            <td><span class="badge badge-info">{{ o.status.replace('_',' ').title() }}</span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <p><a href="{{ url_for('customer.orders') }}">View all orders →</a></p>
+    {% else %}
+      <p class="muted">No orders yet. <a href="{{ url_for('public.designs') }}">Browse designs</a> to place your first order.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h4 class="mt-0">Current Measurement</h4>
+    {% if measurement %}
+      <p class="muted">Version {{ measurement.version }} &middot; saved {{ measurement.created_at }}</p>
+      <a href="{{ url_for('customer.measurements') }}" class="btn btn-sm btn-outline">View / Update</a>
+    {% else %}
+      <a href="{{ url_for('customer.measurements') }}" class="btn btn-sm">Add Measurement</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

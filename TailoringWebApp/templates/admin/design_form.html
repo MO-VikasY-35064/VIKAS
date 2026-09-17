@@ -1,0 +1,64 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>{{ 'Edit' if design else 'Add' }} Design</h1>
+<form method="post" enctype="multipart/form-data" class="card" style="max-width:600px;">
+  <label>Design Name *</label>
+  <input type="text" name="name" required value="{{ design.name if design else '' }}">
+
+  <label>Description</label>
+  <textarea name="description" rows="2">{{ design.description if design else '' }}</textarea>
+
+  <div class="grid grid-2">
+    <div>
+      <label>Category</label>
+      <input type="text" name="category" value="{{ design.category if design else '' }}" placeholder="Party Wear / Bridal / Simple ...">
+    </div>
+    <div>
+      <label>Status</label>
+      <select name="status">
+        <option value="ACTIVE" {{ 'selected' if design and design.status=='ACTIVE' }}>Active</option>
+        <option value="INACTIVE" {{ 'selected' if design and design.status=='INACTIVE' }}>Inactive</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div>
+      <label>Neck Style</label>
+      <input type="text" name="neck_style" value="{{ design.neck_style if design else '' }}">
+    </div>
+    <div>
+      <label>Sleeve Style</label>
+      <input type="text" name="sleeve_style" value="{{ design.sleeve_style if design else '' }}">
+    </div>
+  </div>
+
+  <label>Blouse Length</label>
+  <input type="text" name="blouse_length" value="{{ design.blouse_length if design else '' }}">
+
+  <label>Customisation Details</label>
+  <textarea name="customisation_details" rows="2">{{ design.customisation_details if design else '' }}</textarea>
+
+  <div class="grid grid-2">
+    <div>
+      <label>Base Price (₹)</label>
+      <input type="number" step="0.01" min="0" name="base_price" value="{{ design.base_price if design else 0 }}">
+    </div>
+    <div>
+      <label>Additional Charges (₹)</label>
+      <input type="number" step="0.01" min="0" name="additional_charges" value="{{ design.additional_charges if design else 0 }}">
+    </div>
+  </div>
+
+  <label>Design Image</label>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+  {% if design and design.image_path %}
+    <img src="{{ url_for('media', filename=design.image_path) }}" style="width:120px;margin-top:8px;border-radius:6px;">
+  {% endif %}
+
+  <div class="form-actions">
+    <button class="btn" type="submit">Save Design</button>
+    <a href="{{ url_for('admin.designs') }}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

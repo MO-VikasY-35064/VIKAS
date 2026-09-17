@@ -1,0 +1,16 @@
+Flask==3.1.3
+Werkzeug==3.1.3
+
+# Loads .env for local runs (see .env.example) - lets you configure
+# DB_ENGINE/MSSQL_* without editing config.py or setting system env vars
+python-dotenv==1.0.1
+
+# Production WSGI server used behind IIS (see web.config / docs/AZURE_IIS_DEPLOYMENT.md)
+waitress==3.0.0
+
+# Required for MS SQL Server (DB_ENGINE=mssql) - production database
+pyodbc==5.1.0
+
+# ---- Optional, needed only when you enable real Gmail/SMTP sending ----
+# google-api-python-client
+# google-auth-oauthlib

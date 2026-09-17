@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h1>Blouse Designs</h1>
+  <a href="{{ url_for('admin.new_design') }}" class="btn">+ Add Design</a>
+</div>
+
+<div class="grid grid-4">
+  {% for d in designs %}
+  <div class="card design-card">
+    {% if d.image_path %}
+      <img src="{{ url_for('media', filename=d.image_path) }}" alt="{{ d.name }}">
+    {% else %}
+      <div style="height:220px;background:#f0e6d8;display:flex;align-items:center;justify-content:center;color:#b7a68e;">No Image</div>
+    {% endif %}
+    <div class="body">
+      <h4 class="mb-0">{{ d.name }}</h4>
+      <p class="muted" style="margin:4px 0;">{{ d.category }}</p>
+      <p class="price">{{ (d.base_price + d.additional_charges) | inr }}</p>
+      <span class="badge badge-{{ 'active' if d.status=='ACTIVE' else 'inactive' }}">{{ d.status }}</span>
+      <div style="margin-top:10px;"><a href="{{ url_for('admin.edit_design', design_id=d.id) }}" class="btn btn-sm btn-outline">Edit</a></div>
+    </div>
+  </div>
+  {% else %}
+    <p class="muted">No designs yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>All Orders</h1>
+
+<form method="get" class="card" style="margin-bottom:20px;display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;">
+  <div style="flex:1;min-width:200px;">
+    <label>Search (Order ID / Mobile / Name)</label>
+    <input type="text" name="q" value="{{ q }}">
+  </div>
+  <div style="min-width:220px;">
+    <label>Status</label>
+    <select name="status">
+      <option value="">All</option>
+      {% for s in statuses %}
+        <option value="{{ s }}" {{ 'selected' if s == selected_status }}>{{ s.replace('_',' ').title() }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div><button class="btn btn-sm" type="submit">Filter</button></div>
+</form>
+
+<table>
+  <thead>
+    <tr><th>Order ID</th><th>Customer</th><th>Mobile</th><th>Design</th><th>Delivery</th><th>Total</th><th>Pending</th><th>Status</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for o in orders %}
+    <tr>
+      <td>{{ o.order_number }}</td>
+      <td>{{ o.customer_name or '-' }}</td>
+      <td>{{ o.mobile }}</td>
+      <td>{{ o.design_name }}</td>
+      <td>{{ o.delivery_date }}</td>
+      <td>{{ o.total_amount | inr }}</td>
+      <td>{{ o.amount_pending | inr }}</td>
+      <td><span class="badge badge-info">{{ o.status.replace('_',' ').title() }}</span></td>
+      <td style="display:flex;gap:6px;">
+        <a href="{{ url_for('admin.order_detail', order_number=o.order_number) }}" class="btn btn-sm btn-outline">Open</a>
+        <form method="post" action="{{ url_for('admin.delete_order', order_number=o.order_number) }}"
+              onsubmit="return confirm('Permanently delete order {{ o.order_number }}? This cannot be undone.');">
+          <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="9" class="muted">No orders found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

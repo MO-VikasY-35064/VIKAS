@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="account-shell">
+  <nav class="account-nav">
+    <a href="{{ url_for('customer.dashboard') }}" class="{{ 'active' if request.endpoint=='customer.dashboard' }}">Dashboard</a>
+    <a href="{{ url_for('customer.profile') }}" class="{{ 'active' if request.endpoint=='customer.profile' }}">My Profile</a>
+    <a href="{{ url_for('customer.measurements') }}" class="{{ 'active' if request.endpoint=='customer.measurements' }}">My Measurements</a>
+    <a href="{{ url_for('public.designs') }}">Browse Designs</a>
+    <a href="{{ url_for('customer.orders') }}" class="{{ 'active' if request.endpoint and 'order' in request.endpoint }}">My Orders</a>
+    <a href="{{ url_for('public.track_order') }}">Track Order</a>
+  </nav>
+  <div class="account-content">
+    {% block account_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

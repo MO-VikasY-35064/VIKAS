@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Audit Logs</h1>
+<table>
+  <thead><tr><th>Date/Time</th><th>Admin</th><th>Action</th><th>Module</th><th>Record</th><th>Old</th><th>New</th></tr></thead>
+  <tbody>
+  {% for l in logs %}
+    <tr>
+      <td>{{ l.created_at }}</td>
+      <td>{{ l.admin_user }}</td>
+      <td>{{ l.action }}</td>
+      <td>{{ l.module }}</td>
+      <td>{{ l.record_id }}</td>
+      <td>{{ l.old_value or '-' }}</td>
+      <td>{{ l.new_value or '-' }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7" class="muted">No audit records yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

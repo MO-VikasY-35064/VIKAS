@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Take Measurement</h1>
+<p class="muted">For {{ customer.name or customer.mobile }} ({{ customer.mobile }})</p>
+
+<form method="post" class="card" style="max-width:600px;">
+  <div class="grid grid-2">
+    {% for field, label in fields %}
+      <div>
+        <label>{{ label }}</label>
+        <input type="number" step="0.1" min="0" max="100" name="{{ field }}"
+               value="{{ form_values.get(field, '') if form_values else '' }}">
+      </div>
+    {% endfor %}
+  </div>
+  <label>Other / Custom Measurement Notes</label>
+  <textarea name="other_notes" rows="2">{{ form_values.get('other_notes', '') if form_values else '' }}</textarea>
+  <div class="form-actions">
+    <button class="btn" type="submit">Save as New Version</button>
+    <a href="{{ url_for('admin.customer_detail', customer_id=customer.id) }}" class="btn btn-secondary">Cancel</a>
+    <p class="help-text">This creates a new measurement version for this customer. Past orders keep the
+      version that was current when they were placed - this never changes historical orders (BR-014).</p>
+  </div>
+</form>
+{% endblock %}

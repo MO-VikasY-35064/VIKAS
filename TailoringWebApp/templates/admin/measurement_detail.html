@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Measurement V{{ measurement.version }}</h1>
+<p class="muted">{{ customer.name or customer.mobile }} ({{ customer.mobile }}) &middot; Saved {{ measurement.created_at }}
+  {% if measurement.is_current %}<span class="badge badge-active">Current</span>{% else %}<span class="muted">Archived</span>{% endif %}
+</p>
+
+<div class="card">
+  <div class="grid grid-4">
+    {% for field, label in fields %}
+      <div><span class="muted">{{ label }}</span><br><strong>{{ measurement[field] if measurement[field] is not none else '-' }}</strong></div>
+    {% endfor %}
+  </div>
+  {% if measurement.other_notes %}
+    <hr class="sep">
+    <p><strong>Notes:</strong> {{ measurement.other_notes }}</p>
+  {% endif %}
+</div>
+
+{% if orders_using_this %}
+<div class="card" style="margin-top:20px;">
+  <h4 class="mt-0">Orders Using This Measurement Version</h4>
+  <table><thead><tr><th>Order</th><th>Design</th><th>Status</th></tr></thead><tbody>
+  {% for o in orders_using_this %}
+    <tr><td><a href="{{ url_for('admin.order_detail', order_number=o.order_number) }}">{{ o.order_number }}</a></td>
+    <td>{{ o.design_name }}</td><td>{{ o.status.replace('_',' ').title() }}</td></tr>
+  {% endfor %}
+  </tbody></table>
+</div>
+{% endif %}
+
+<div style="margin-top:20px;">
+  <a href="{{ url_for('admin.customer_detail', customer_id=customer.id) }}" class="btn btn-sm btn-outline">← Back to Customer</a>
+  <a href="{{ url_for('admin.new_measurement', customer_id=customer.id) }}" class="btn btn-sm">+ Take New Measurement</a>
+</div>
+{% endblock %}

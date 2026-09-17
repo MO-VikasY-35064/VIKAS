@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Customisation Gallery</h1>
+<div class="grid grid-3">
+  {% for g in gallery %}
+  <div class="card gallery-card" style="padding:0;overflow:hidden;">
+    <img src="{{ url_for('media', filename=g.image_path) }}" alt="{{ g.description }}">
+    <div style="padding:12px;">
+      <span class="badge badge-info">{{ g.category }}</span>
+      <p style="font-size:13px;margin-top:8px;">{{ g.description }}</p>
+    </div>
+  </div>
+  {% else %}
+    <p class="muted">No gallery images yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h1>Dashboard</h1>
+  <a href="{{ url_for('admin.quick_measurement') }}" class="btn btn-gold">+ Take Measurement</a>
+</div>
+
+<div class="grid grid-4" style="margin-bottom:24px;">
+  <div class="kpi-card"><div class="value">{{ kpis.total_customers }}</div><div class="label">Total Customers</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.total_orders }}</div><div class="label">Total Orders</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.new_orders }}</div><div class="label">New Orders</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.cancelled }}</div><div class="label">Cancelled Orders</div></div>
+
+  <div class="kpi-card"><div class="value">{{ kpis.in_cutting }}</div><div class="label">Orders in Cutting</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.in_stitching }}</div><div class="label">Orders in Stitching</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.in_trial }}</div><div class="label">Orders in Trial</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.ready_for_delivery }}</div><div class="label">Ready for Delivery</div></div>
+</div>
+
+<div class="grid grid-3" style="margin-bottom:24px;">
+  <div class="kpi-card"><div class="value">{{ kpis.total_amount | inr }}</div><div class="label">Total Order Amount</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.amount_received | inr }}</div><div class="label">Amount Received</div></div>
+  <div class="kpi-card"><div class="value">{{ kpis.amount_pending | inr }}</div><div class="label">Amount Pending</div></div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <h4 class="mt-0">Today's Deliveries</h4>
+    {% if todays_deliveries %}
+      <table><thead><tr><th>Order</th><th>Customer</th><th>Status</th></tr></thead><tbody>
+      {% for d in todays_deliveries %}
+        <tr><td><a href="{{ url_for('admin.order_detail', order_number=d.order_number) }}">{{ d.order_number }}</a></td>
+        <td>{{ d.name }} ({{ d.mobile }})</td><td>{{ d.status.replace('_',' ').title() }}</td></tr>
+      {% endfor %}
+      </tbody></table>
+    {% else %}<p class="muted">No deliveries scheduled for today.</p>{% endif %}
+  </div>
+
+  <div class="card">
+    <h4 class="mt-0">Upcoming Deliveries</h4>
+    {% if upcoming %}
+      <table><thead><tr><th>Order</th><th>Customer</th><th>Date</th></tr></thead><tbody>
+      {% for d in upcoming %}
+        <tr><td><a href="{{ url_for('admin.order_detail', order_number=d.order_number) }}">{{ d.order_number }}</a></td>
+        <td>{{ d.name }} ({{ d.mobile }})</td><td>{{ d.delivery_date }}</td></tr>
+      {% endfor %}
+      </tbody></table>
+    {% else %}<p class="muted">No upcoming deliveries.</p>{% endif %}
+  </div>
+</div>
+{% endblock %}

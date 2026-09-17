@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Website Settings</h1>
+<form method="post" class="card" style="max-width:600px;" enctype="multipart/form-data">
+  <label>Brand Name</label>
+  <input type="text" name="brand_name" value="{{ settings.brand_name or '' }}">
+  <label>About Us</label>
+  <textarea name="about_us" rows="3">{{ settings.about_us or '' }}</textarea>
+  <label>Address</label>
+  <input type="text" name="address" value="{{ settings.address or '' }}">
+  <label>Contact Number</label>
+  <input type="text" name="contact_number" value="{{ settings.contact_number or '' }}">
+  <label>Contact Email</label>
+  <input type="email" name="contact_email" value="{{ settings.contact_email or '' }}">
+
+  <hr class="sep">
+  <h4 class="mt-0">Brand Logo</h4>
+  {% if settings.logo_path %}
+    <img src="{{ url_for('media', filename=settings.logo_path) }}" alt="Current logo"
+         style="max-height:80px;display:block;margin-bottom:8px;">
+  {% else %}
+    <p class="help-text">No logo uploaded yet.</p>
+  {% endif %}
+  <input type="file" name="logo" accept=".jpg,.jpeg,.png,.webp">
+  <p class="help-text">Shown on the public home page. Uploading a new file replaces the current logo.</p>
+
+  <hr class="sep">
+  <h4 class="mt-0">Email Triggers</h4>
+  <p class="help-text">Customer receives an automatic email whenever an order reaches a checked
+    status below. Leave a status unchecked to skip sending an email for it.</p>
+  <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:12px;">
+  {% for s in all_statuses %}
+    <label style="font-weight:normal;">
+      <input type="checkbox" name="email_trigger_statuses" value="{{ s }}"
+             {{ 'checked' if s in enabled_statuses }}>
+      {{ s.replace('_',' ').title() }}
+    </label>
+  {% endfor %}
+  </div>
+
+  <div class="form-actions"><button class="btn" type="submit">Save Settings</button></div>
+</form>
+<p class="help-text" style="margin-top:16px;">Logo / brand image / gallery images are managed from the
+  Designs and Gallery sections. Pricing changes only affect new orders (BR-013).</p>
+{% endblock %}

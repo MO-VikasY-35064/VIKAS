@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Blouse Designs</h1>
+
+<div style="margin-bottom:20px;">
+  <a href="{{ url_for('public.designs') }}" class="btn btn-sm {{ 'btn-outline' if selected_category else '' }}">All</a>
+  {% for c in categories %}
+    <a href="{{ url_for('public.designs', category=c.category) }}"
+       class="btn btn-sm {{ 'btn-outline' if selected_category != c.category else '' }}">{{ c.category }}</a>
+  {% endfor %}
+</div>
+
+<div class="grid grid-4">
+  {% for d in designs %}
+  <div class="card design-card">
+    {% if d.image_path %}
+      <img src="{{ url_for('media', filename=d.image_path) }}" alt="{{ d.name }}">
+    {% else %}
+      <div style="height:220px;background:#f0e6d8;display:flex;align-items:center;justify-content:center;color:#b7a68e;">No Image</div>
+    {% endif %}
+    <div class="body">
+      <h4 class="mb-0">{{ d.name }}</h4>
+      <p class="muted" style="margin:4px 0;">{{ d.category }} &middot; {{ d.neck_style }} &middot; {{ d.sleeve_style }}</p>
+      <p style="font-size:13px;">{{ d.description }}</p>
+      <p class="price">{{ (d.base_price + d.additional_charges) | inr }}</p>
+      {% if session.get('customer_id') %}
+        <a href="{{ url_for('customer.new_order', design_id=d.id) }}" class="btn btn-sm">Order This</a>
+      {% else %}
+        <a href="{{ url_for('auth.customer_login') }}" class="btn btn-sm btn-outline">Login to Order</a>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+    <p class="muted">No designs found in this category.</p>
+  {% endfor %}
+</div>
+{% endblock %}

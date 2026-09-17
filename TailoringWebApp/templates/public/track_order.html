@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Track Your Order</h1>
+<form method="post" class="card form-card" style="margin-bottom:30px;">
+  <label>Order ID</label>
+  <input type="text" name="order_number" placeholder="e.g. ORD202609110001" required>
+  <div class="form-actions"><button class="btn" type="submit">Track</button></div>
+</form>
+
+{% if searched %}
+  {% if order %}
+    <div class="card">
+      <h3 class="mt-0">Order {{ order.order_number }}</h3>
+      <p class="muted">{{ order.design_name }} &middot; Placed on {{ order.created_at }}</p>
+
+      <div class="timeline">
+        {% set current_index = status_flow.index(order.status) if order.status in status_flow else -1 %}
+        {% for s in status_flow %}
+          {% set idx = loop.index0 %}
+          <div class="timeline-step {{ 'done' if idx < current_index else ('current' if idx == current_index else '') }}">
+            <div class="dot">{{ '✓' if idx < current_index else idx+1 }}</div>
+            <div class="label">{{ s.replace('_',' ').title() }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if order.status in ('CANCELLED','ON_HOLD') %}
+        <p><span class="badge badge-{{ 'cancelled' if order.status == 'CANCELLED' else 'pending' }}">{{ order.status }}</span></p>
+      {% endif %}
+
+      <hr class="sep">
+      <h4>Status History</h4>
+      <table>
+        <thead><tr><th>Date/Time</th><th>Status</th><th>Remarks</th></tr></thead>
+        <tbody>
+        {% for h in history %}
+          <tr><td>{{ h.created_at }}</td><td>{{ h.new_status.replace('_',' ').title() }}</td><td>{{ h.remarks or '-' }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">No order found with that Order ID. Please double-check and try again.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}
